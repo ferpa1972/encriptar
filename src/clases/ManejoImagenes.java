@@ -12,7 +12,7 @@ public class ManejoImagenes {
     
     private static ManejoImagenes instancia = null;
     
-    public ManejoImagenes getInstancia(){
+    public static ManejoImagenes getInstancia(){
         if (instancia == null){
             instancia = new ManejoImagenes();
         }
