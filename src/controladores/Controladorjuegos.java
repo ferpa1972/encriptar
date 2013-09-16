@@ -1,0 +1,180 @@
+
+package controladores;
+
+import baseDatos.ManejadorBD;
+import dominio.Categoria;
+import dominio.Comentario;
+import dominio.Desarrollador;
+import dominio.Juego;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Controladorjuegos {
+    
+    private static Controladorjuegos INSTANCIA = null;
+    private ManejadorBD mbd = ManejadorBD.getInstancia();
+    
+    
+    public static Controladorjuegos getInstancia(){
+        if (INSTANCIA == null)
+             INSTANCIA = new Controladorjuegos();
+         return INSTANCIA;
+    }
+
+    private Controladorjuegos() {
+        //mbd.conectar();
+    }
+    
+    public Juego buscarJuegoPorID(int id) throws SQLException{
+        ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where id_juego = "+id);
+        Juego j = new Juego();
+        while (res.next()){
+            j.setId(res.getInt("id_juego"));
+            j.setNombre(res.getString("nombre"));
+        }
+        return j;
+    }
+    
+    public void altaJuego(Juego juego, ArrayList cats) throws SQLException {
+        int i=0;
+        String sql ="insert into juegos (nombre, descripcion, size, precio, id_desarrollador, foto) "
+                    + "values ('$1','$2',$3,$4,$5,'$6')";
+        sql = sql.replace("$1", juego.getNombre());
+        sql = sql.replace("$2", juego.getDescripcion());
+        sql = sql.replace("$3", String.valueOf(juego.getSize()));
+        sql = sql.replace("$4", String.valueOf(juego.getPrecio()));
+        sql = sql.replace("$5", String.valueOf(juego.getDes().getId()));
+        sql = sql.replace("$6", juego.getPortada());
+
+        int idj = mbd.INSERT(sql);
+
+        while(i< cats.size()){
+         Categoria c = (Categoria)cats.get(i);
+         mbd.INSERT("insert into categotias_juegos (id_juego, id_categoria) "
+                 + "values ("+idj+", "+c.getId()+")");
+         i++;
+        }
+    }
+    
+    public ArrayList listarJuegosPorCategoria(int id_cat) throws SQLException{
+        ArrayList juegos = new ArrayList();
+        String sql = "select j.id_juego, j.nombre from juegos j, categorias_juegos cj "+
+                "where cj.id_categoria = "+id_cat+
+                " and cj.id_juego = j.id_juego";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
+    public Juego verInfoJuego(int id) throws SQLException{
+        Juego j = new Juego();
+        String sql = "select j.*, u.nick from juegos j, usuarios u "+
+                     "where j.id_desarrollador = u.id_usuario and j.id_juego ="+id;
+        ResultSet res = mbd.SELECT(sql);
+        res.next();
+
+        j.setId(res.getInt("id_juego"));
+        j.setNombre(res.getString("nombre"));
+        j.setDescripcion(res.getString("descripcion"));
+        j.setPrecio(res.getDouble("precio"));
+        j.setSize(res.getDouble("size"));
+        j.setPortada(res.getString("foto"));
+        Desarrollador des = new Desarrollador();
+        des.setNick(res.getString("nick"));
+        j.setDes(des);
+
+        return j;
+    }
+    
+    public ArrayList verComentariosJuego(int id) throws SQLException{
+        ArrayList coments = new ArrayList();
+        String sql = "select * from comentarios where id_juego = "+id;
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Comentario com = new Comentario();
+            com.setId(res.getInt("id_comentario"));
+            com.setTexto(res.getString("texto"));
+            com.setId_juego(res.getInt("id_juego"));
+            com.setFecha(res.getDate("fecha"));
+            com.setId_usu(res.getInt("id_usuario"));
+            com.setId_padre(res.getInt("id_padre"));
+            coments.add(com);
+        }
+
+        return coments;
+    }
+    
+    public ArrayList selectRespuestas(int id) throws SQLException{
+        ArrayList respuestas = new ArrayList();
+        String sql = "select * from comentarios where id_padre = "+id;
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Comentario com = new Comentario();
+            com.setId(res.getInt("id_comentario"));
+            com.setTexto(res.getString("texto"));
+            com.setId_juego(res.getInt("id_juego"));
+            com.setFecha(res.getDate("fecha"));
+            com.setId_usu(res.getInt("id_usuario"));
+            com.setId_padre(res.getInt("id_padre"));
+            respuestas.add(com);
+            System.out.println(com.getTexto());
+        }
+
+        return respuestas;
+    }
+    
+    public ArrayList listarJuegos() throws SQLException{
+        ArrayList juegos = new ArrayList();
+        String sql = "select id_juego, nombre from juegos";
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setId(res.getInt("id_juego"));
+            j.setNombre(res.getString("nombre"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
+    public ArrayList listarJuegosConCompras() throws SQLException{
+        ArrayList juegos = new ArrayList();
+
+        String sql = "select id_juego, nombre from juegos where id_juego in "+
+                     "(select id_juego from compras)";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setId(res.getInt("id_juego"));
+            j.setNombre(res.getString("nombre"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    } 
+    
+    public int altaComentario(Comentario c) throws SQLException{
+        String sql = "insert into comentarios (id_juego, texto, fecha, id_usuario, id_padre) "+
+                         " values ($1,'$2',$3,$4,$5)";
+        
+        Date fecha = new Date(c.getFecha().getTime());
+        
+        sql = sql.replace("$1", String.valueOf(c.getId_juego()));
+        sql = sql.replace("$2", c.getTexto());
+        sql = sql.replace("$3", fecha.toString());
+        sql = sql.replace("$4", String.valueOf(c.getId_usu()));
+        sql = sql.replace("$5", String.valueOf(c.getId_padre()));
+        
+        return mbd.INSERT(sql);
+    }
+}
