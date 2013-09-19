@@ -14,6 +14,20 @@ public class Usuario {
     private String nick;
     private String email;
     private String img;
+    private String pass;
+
+    public Usuario() {
+        this.id = 0;
+        this.nombre = "";
+        this.apellido = "";
+        this.tipo = "";
+        this.fecha_nac = new Date();
+        this.edad = 0;
+        this.nick = "";
+        this.email = "";
+        this.img = "";
+        this.pass = "";
+    }
 
     public String getImg() {
         return img;
@@ -67,6 +81,14 @@ public class Usuario {
         return edad;
     }
 
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+    
     private void calcular() {
         Calendar hoy = Calendar.getInstance();
         //int dif_y = hoy.get(Calendar.YEAR) - this.fecha_nac.get(Calendar.YEAR);
