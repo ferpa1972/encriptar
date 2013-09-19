@@ -165,7 +165,7 @@ public class Controladorjuegos {
     
     public int altaComentario(Comentario c) throws SQLException{
         String sql = "insert into comentarios (id_juego, texto, fecha, id_usuario, id_padre) "+
-                         " values ($1,'$2',$3,$4,$5)";
+                         " values ($1,'$2','$3',$4,$5)";
         
         Date fecha = new Date(c.getFecha().getTime());
         

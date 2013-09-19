@@ -46,29 +46,26 @@ public class ControladorUsuarios {
     }
     
     public void altaUsuario(Usuario user) throws Exception{
-        try {
-            Date fnac = new Date(user.getFecha_nac().getTime());
-            String sql = "insert into usuarios (nombre,apellido,nick,fecha_nacimiento,email,tipo,foto,sitio_web)"
-                    + "   values ($1,$2,$3,$4,$5,$6,$7,$8)";
-            
-            sql = sql.replace("$1", user.getNombre());
-            sql = sql.replace("$2", user.getApellido());
-            sql = sql.replace("$3", user.getNick());
-            sql = sql.replace("$4", fnac.toString());
-            sql = sql.replace("$5", user.getEmail());
-            sql = sql.replace("$6", user.getTipo());
-            sql = sql.replace("$7", user.getImg());
-            if (user.getTipo().equals("d")){
-                Desarrollador d = (Desarrollador)user;
-                sql = sql.replace("$8", d.getWeb());
-            }
-            else{
-                sql = sql.replace("$8", "");
-            }
-            mbd.INSERT(sql);
-        } catch (SQLException ex) {
-            throw ex;
+        Date fnac = new Date(user.getFecha_nac().getTime());
+        String sql = "insert into usuarios (nombre,apellido,nick,fecha_nacimiento,email,tipo,foto,sitio_web,pass)"
+                + "   values ('$1','$2','$3','$4','$5','$6','$7','$8','$9')";
+
+        sql = sql.replace("$1", user.getNombre());
+        sql = sql.replace("$2", user.getApellido());
+        sql = sql.replace("$3", user.getNick());
+        sql = sql.replace("$4", fnac.toString());
+        sql = sql.replace("$5", user.getEmail());
+        sql = sql.replace("$6", user.getTipo());
+        sql = sql.replace("$7", user.getImg());
+        sql = sql.replace("$9", user.getPass());
+        if (user.getTipo().equals("d")){
+            Desarrollador d = (Desarrollador)user;
+            sql = sql.replace("$8", d.getWeb());
         }
+        else{
+            sql = sql.replace("$8", "");
+        }
+        mbd.INSERT(sql);
     }
     
     public void actualizarUsuario(Usuario user) throws Exception{
