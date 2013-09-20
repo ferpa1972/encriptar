@@ -69,9 +69,9 @@ public class ControladorUsuarios {
     }
     
     public void actualizarUsuario(Usuario user) throws Exception{
-        String sql = "update usuarios set nombre = $1, apellido = $2, nick = $3, "+
-                     "fecha_nacimiento = $4,email = $5, foto = $6, tipo = $7 "
-                     + "where id_usuario = "+user.getId();
+        String sql = "update usuarios set nombre = '$1', apellido = '$2', nick = '$3', "+
+                     "fecha_nacimiento = '$4',email = '$5', foto = '$6', sitio_web = '$7',"
+                     + " pass = '$8' where id_usuario = "+user.getId();
         Date fnac = new Date(user.getFecha_nac().getTime());
         sql = sql.replace("$1", user.getNombre());
         sql = sql.replace("$2", user.getApellido());
@@ -79,13 +79,14 @@ public class ControladorUsuarios {
         sql = sql.replace("$4", fnac.toString());
         sql = sql.replace("$5", user.getEmail());
         sql = sql.replace("$6", user.getImg());
-        if (user.getTipo().equals("d")){
+        sql = sql.replace("$8", user.getPass());
+        
+        if(user.getTipo().equals("d")){
             Desarrollador d = (Desarrollador)user;
             sql = sql.replace("$7", d.getWeb());
         }
-        else{
+        else
             sql = sql.replace("$7", "");
-        }
         
         mbd.UPDATE(sql);
     }
