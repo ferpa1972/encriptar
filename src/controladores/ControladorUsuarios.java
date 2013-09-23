@@ -129,4 +129,9 @@ public class ControladorUsuarios {
         }
         return u;
     }
+    
+    public boolean login(String user, String pass) throws SQLException{
+        return mbd.SELECT("select id_usuario from usuarios where "
+                        + " nick = '"+user+"' and pass = '"+pass+"'").first();
+    }
 }
