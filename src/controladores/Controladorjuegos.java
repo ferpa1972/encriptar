@@ -177,4 +177,8 @@ public class Controladorjuegos {
         
         return mbd.INSERT(sql);
     }
+
+    public ArrayList listarJuegosPorCategoria(String cad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
