@@ -14,6 +14,7 @@ public class Juego {
     private ArrayList categorias;
     private ArrayList compras;
     private ArrayList comentarios;
+    private ArrayList <Version> versiones;
 
     public Desarrollador getDes() {
         return des;
@@ -94,6 +95,15 @@ public class Juego {
     public void setComentarios(ArrayList comentarios) {
         this.comentarios = comentarios;
     }
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
+    
 
     @Override
     public String toString() {

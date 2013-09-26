@@ -12,6 +12,11 @@ public class Version {
     private String jar;
     private Date fecha_alta;
     private Estado estado;
+    private double size;
+    
+    public Version(){
+        
+    }
 
     public Version(int id_juego, String nro_version, String jar) {
         this.id_juego = id_juego;
@@ -74,6 +79,13 @@ public class Version {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
-    
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
     
 }
