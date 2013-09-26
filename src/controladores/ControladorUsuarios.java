@@ -134,4 +134,11 @@ public class ControladorUsuarios {
         return mbd.SELECT("select id_usuario from usuarios where "
                         + " nick = '"+user+"' and pass = '"+pass+"'").first();
     }
+    
+    public Usuario find(String nick) throws SQLException{
+        ResultSet res = mbd.SELECT("select id_usuario from usuarios where nick = '"+nick+"'");
+        res.next();
+        int id = res.getInt(1);
+        return this.verInfoUsuario(id);
+    }
 }
