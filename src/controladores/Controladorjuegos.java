@@ -6,6 +6,7 @@ import dominio.Categoria;
 import dominio.Comentario;
 import dominio.Desarrollador;
 import dominio.Juego;
+import dominio.Version;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,6 +92,18 @@ public class Controladorjuegos {
         Desarrollador des = new Desarrollador();
         des.setNick(res.getString("nick"));
         j.setDes(des);
+        
+        ResultSet res2 = mbd.SELECT("select numero_version, size from versiones where id_juego = "+id
+                                    +" and estado = 'aprobada'");
+        ArrayList <Version> vers = new ArrayList<>();
+        while(res2.next()){
+            Version v = new Version();
+            v.setId_juego(id);
+            v.setNro_version(res2.getString("numero_version"));
+            v.setSize(res2.getDouble("size"));
+            vers.add(v);
+        }
+        j.setVersiones(vers);
 
         return j;
     }

@@ -88,6 +88,10 @@ public class ManejadorBD {
         }
     }
     
+    public boolean estaDesconectado(){
+        return (conexion==null);
+    }
+    
     public ResultSet SELECT(String sql) throws SQLException{
         ResultSet res;
         st = conexion.createStatement();
