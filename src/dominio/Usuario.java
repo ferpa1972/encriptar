@@ -3,6 +3,7 @@ package dominio;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Usuario {
     private int id;
@@ -78,6 +79,8 @@ public class Usuario {
     }
 
     public int getEdad() {
+        if (edad == 0)
+            calcularEdad();
         return edad;
     }
 
@@ -89,17 +92,16 @@ public class Usuario {
         this.pass = pass;
     }
     
-    private void calcular() {
+    private void calcularEdad() {
         Calendar hoy = Calendar.getInstance();
-        //int dif_y = hoy.get(Calendar.YEAR) - this.fecha_nac.get(Calendar.YEAR);
-        //int dif_m = hoy.get(Calendar.MONTH) - this.fecha_nac.get(Calendar.MONTH);
-        //int dif_d = hoy.get(Calendar.DAY_OF_MONTH) - this.fecha_nac.get(Calendar.DAY_OF_MONTH); 
+        Calendar fnac = new GregorianCalendar();
+        fnac.setTime(fecha_nac);
         
-        //if(dif_m<0 || (dif_m==0 && dif_d<0))
-            //dif_y = dif_y – 1;
-        
-        //this.edad = dif_y;
+        this.edad = hoy.get(Calendar.YEAR) - fnac.get(Calendar.YEAR);
+        if (hoy.get(Calendar.DAY_OF_YEAR) < fnac.get(Calendar.DAY_OF_YEAR)){
+            this.edad --;
         }
+    }
 
     public String getNick() {
         return nick;
