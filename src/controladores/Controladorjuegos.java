@@ -61,20 +61,20 @@ public class Controladorjuegos {
     
     public ArrayList listarJuegosPorCategoria(int id_cat) throws SQLException{
         ArrayList juegos = new ArrayList();
-        String sql = "select j.id_juego, j.nombre from juegos j, categorias_juegos cj "+
+        String sql = "select j.id_juego from juegos j, categorias_juegos cj "+
                 "where cj.id_categoria = "+id_cat+
                 " and cj.id_juego = j.id_juego";
 
         ResultSet res = mbd.SELECT(sql);
         while(res.next()){
-            Juego j = new Juego();
-            j.setNombre(res.getString("nombre"));
-            j.setId(res.getInt("id_juego"));
+            Juego j = this.verInfoJuego(res.getInt("id_juego"));
+            
             juegos.add(j);
         }
 
         return juegos;
     }
+
     
     public Juego verInfoJuego(int id) throws SQLException{
         Juego j = new Juego();
