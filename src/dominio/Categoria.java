@@ -9,6 +9,12 @@ public class Categoria {
     private String nombre;
     private String imagen;
     private ArrayList<Juego> juegos;
+    
+    public Categoria(){
+        this.id = 0;
+        this.nombre = "";
+        this.imagen = "";
+    }
 
     public int getId() {
         return id;
