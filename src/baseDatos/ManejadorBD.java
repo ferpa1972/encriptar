@@ -77,10 +77,10 @@ public class ManejadorBD {
     }
 
     public void conectar() throws SQLException{
-        this.url = "jdbc:mysql://localhost:3306/market";
+        this.url = "jdbc:mysql://" + host + ":" + puerto + "/" + bd + "";
         try{
             Class.forName(driver);
-            conexion = DriverManager.getConnection(url, "root","root");
+            conexion = DriverManager.getConnection(url, usuario,password);
             System.out.println("Conexion exitosa");
         }
         catch(ClassNotFoundException ex){
