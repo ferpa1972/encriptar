@@ -194,4 +194,21 @@ public class Controladorjuegos {
     public ArrayList listarJuegosPorCategoria(String cad) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
+        ArrayList juegos = new ArrayList();
+        String sql = "select j.id_juego, j.nombre, c.id_usuario from juegos j, compras c "+
+                "where c.id_usuario = "+id_usuario+
+                " and c.id_juego = j.id_juego";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
 }
