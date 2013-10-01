@@ -17,7 +17,6 @@ public class Controladorjuegos {
     private static Controladorjuegos INSTANCIA = null;
     private ManejadorBD mbd = ManejadorBD.getInstancia();
     
-    
     public static Controladorjuegos getInstancia(){
         if (INSTANCIA == null)
              INSTANCIA = new Controladorjuegos();
@@ -74,12 +73,11 @@ public class Controladorjuegos {
 
         return juegos;
     }
-
     
     public Juego verInfoJuego(int id) throws SQLException{
         Juego j = new Juego();
         String sql = "select j.*, u.nick from juegos j, usuarios u "+
-                     "where j.id_desarrollador = u.id_usuario and j.id_juego ="+id;
+                     "where j.id_desarrollador = u.id_usuario and j.id_juego ="+ id;
         ResultSet res = mbd.SELECT(sql);
         res.next();
 
@@ -89,6 +87,7 @@ public class Controladorjuegos {
         j.setPrecio(res.getDouble("precio"));
         j.setSize(res.getDouble("size"));
         j.setPortada(res.getString("foto"));
+        j.setCategorias(ControladorCategorias.getInstancia().verCategoriasPorJuego(j.getId()));
         Desarrollador des = new Desarrollador();
         des.setNick(res.getString("nick"));
         j.setDes(des);
@@ -191,7 +190,4 @@ public class Controladorjuegos {
         return mbd.INSERT(sql);
     }
 
-    public ArrayList listarJuegosPorCategoria(String cad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
