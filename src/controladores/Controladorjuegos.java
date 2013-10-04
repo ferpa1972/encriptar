@@ -218,4 +218,20 @@ public class Controladorjuegos {
 
         return juegos;
     }
+    
+    public ArrayList listarJuegosPorDesarrollador(int id_usuario) throws SQLException{
+        ArrayList <Juego> juegos = new ArrayList<>();
+        String sql = "select id_juego, nombre from juegos "+
+                     "where id_desarrollador = "+id_usuario;
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
 }
