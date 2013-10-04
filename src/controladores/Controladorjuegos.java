@@ -28,6 +28,17 @@ public class Controladorjuegos {
         //mbd.conectar();
     }
     
+    /*------------------------------------------------------*/
+    public ArrayList <Juego> buscar(String busqueda) throws SQLException{
+        String sql = "";
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = null;
+        return juegos;
+    }
+    
+    /*-------------------------------------------------------*/
+    
+    
     public Juego buscarJuegoPorID(int id) throws SQLException{
         ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where id_juego = "+id);
         Juego j = new Juego();
@@ -189,10 +200,6 @@ public class Controladorjuegos {
         sql = sql.replace("$5", String.valueOf(c.getId_padre()));
         
         return mbd.INSERT(sql);
-    }
-
-    public ArrayList listarJuegosPorCategoria(String cad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
