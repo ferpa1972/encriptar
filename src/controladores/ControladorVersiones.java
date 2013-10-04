@@ -35,7 +35,7 @@ public class ControladorVersiones {
         ArrayList <Version> versiones = new ArrayList<>();
         while (res.next()){
             Version v = new Version();
-            v.setId_juego(id_juego);
+            v.setId_juego((id_juego));
             v.setNro_version(res.getString("numero_version"));
             v.setSize(res.getDouble("size"));
             v.setJar(res.getString("jar"));
