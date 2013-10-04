@@ -15,7 +15,14 @@ public class Version {
     private double size;
     
     public Version(){
-        
+        this.id_version = 0;
+        this.id_juego = 0;
+        this.nro_version = "";
+        this.orden_alta = 1;
+        this.jar = "";
+        this.fecha_alta = new Date();
+        this.estado = Estado.pendiente;
+        this.size = 0;
     }
 
     public Version(int id_juego, String nro_version, String jar) {
