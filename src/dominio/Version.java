@@ -14,6 +14,7 @@ public class Version {
     private String estado;
     private double size;
     private String motivo_recahazo;
+    private Juego juego;
     
     public Version(){
         id_juego = 0;
@@ -24,6 +25,7 @@ public class Version {
         estado = "";
         size = 0;
         motivo_recahazo = "";
+        juego = new Juego();
     }
 
     public Version(int id_juego, String nro_version, String jar) {
@@ -102,6 +104,14 @@ public class Version {
 
     public void setMotivo_recahazo(String motivo_recahazo) {
         this.motivo_recahazo = motivo_recahazo;
+    }
+
+    public Juego getJuego() {
+        return juego;
+    }
+
+    public void setJuego(Juego juego) {
+        this.juego = juego;
     }
     
 }
