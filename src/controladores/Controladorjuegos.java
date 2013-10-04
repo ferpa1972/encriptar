@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controladorjuegos {
     
@@ -109,7 +111,7 @@ public class Controladorjuegos {
         ArrayList <Version> vers = new ArrayList<>();
         while(res2.next()){
             Version v = new Version();
-            v.setId_juego(id);
+            v.setId_juego((id));
             v.setNro_version(res2.getString("numero_version"));
             v.setSize(res2.getDouble("size"));
             vers.add(v);
@@ -226,12 +228,27 @@ public class Controladorjuegos {
 
         ResultSet res = mbd.SELECT(sql);
         while(res.next()){
-            Juego j = new Juego();
-            j.setNombre(res.getString("nombre"));
-            j.setId(res.getInt("id_juego"));
+            Juego j = Controladorjuegos.getInstancia().verInfoJuego(res.getInt("id_juego"));
+            
             juegos.add(j);
         }
 
         return juegos;
     }
+
+    public ArrayList listarJuegosPorDesarrolladorVersionAprobada(int id_usuario) throws SQLException{
+        ArrayList <Juego> juegos = new ArrayList();
+        String sql = "select j.id_juego from juegos j, versiones v " +
+                        "where id_desarrollador = " + id_usuario + " AND  v.estado = 'aprobada' and j.id_juego = v.id_juego;";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = Controladorjuegos.getInstancia().verInfoJuego(res.getInt("id_juego"));
+            
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
 }
