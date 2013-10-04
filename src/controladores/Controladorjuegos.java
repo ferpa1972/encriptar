@@ -27,6 +27,17 @@ public class Controladorjuegos {
         //mbd.conectar();
     }
     
+    /*------------------------------------------------------*/
+    public ArrayList <Juego> buscar(String busqueda) throws SQLException{
+        String sql = "";
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = null;
+        return juegos;
+    }
+    
+    /*-------------------------------------------------------*/
+    
+    
     public Juego buscarJuegoPorID(int id) throws SQLException{
         ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where id_juego = "+id);
         Juego j = new Juego();
@@ -190,5 +201,37 @@ public class Controladorjuegos {
         
         return mbd.INSERT(sql);
     }
+    
+    public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
+        ArrayList juegos = new ArrayList();
+        String sql = "select j.id_juego, j.nombre, c.id_usuario from juegos j, compras c "+
+                "where c.id_usuario = "+id_usuario+
+                " and c.id_juego = j.id_juego";
 
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
+    public ArrayList listarJuegosPorDesarrollador(int id_usuario) throws SQLException{
+        ArrayList <Juego> juegos = new ArrayList<>();
+        String sql = "select id_juego, nombre from juegos "+
+                     "where id_desarrollador = "+id_usuario;
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
 }

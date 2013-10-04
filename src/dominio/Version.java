@@ -3,7 +3,7 @@ package dominio;
 import java.util.Date;
 
 public class Version {
-    public enum Estado {aprobada, pendiente, rechazada};
+    //public enum Estado {aprobada, pendiente, rechazada};
     
     private int id_version;
     private int id_juego;
@@ -11,11 +11,19 @@ public class Version {
     private int orden_alta;
     private String jar;
     private Date fecha_alta;
-    private Estado estado;
+    private String estado;
     private double size;
+    private String motivo_recahazo;
     
     public Version(){
-        
+        id_juego = 0;
+        nro_version = "";
+        orden_alta = 1;
+        jar = "";
+        fecha_alta = new Date();
+        estado = "";
+        size = 0;
+        motivo_recahazo = "";
     }
 
     public Version(int id_juego, String nro_version, String jar) {
@@ -72,11 +80,11 @@ public class Version {
         this.fecha_alta = fecha_alta;
     }
 
-    public Estado getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
@@ -86,6 +94,14 @@ public class Version {
 
     public void setSize(double size) {
         this.size = size;
+    }
+
+    public String getMotivo_recahazo() {
+        return motivo_recahazo;
+    }
+
+    public void setMotivo_recahazo(String motivo_recahazo) {
+        this.motivo_recahazo = motivo_recahazo;
     }
     
 }
