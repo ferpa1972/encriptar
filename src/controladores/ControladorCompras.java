@@ -4,7 +4,6 @@ package controladores;
 import baseDatos.ManejadorBD;
 import dominio.Cliente;
 import dominio.Compra;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

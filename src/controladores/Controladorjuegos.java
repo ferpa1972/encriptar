@@ -11,8 +11,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Controladorjuegos {
     
@@ -65,7 +63,7 @@ public class Controladorjuegos {
 
         while(i< cats.size()){
          Categoria c = (Categoria)cats.get(i);
-         mbd.INSERT("insert into categotias_juegos (id_juego, id_categoria) "
+         mbd.INSERT("insert into categorias_juegos (id_juego, id_categoria) "
                  + "values ("+idj+", "+c.getId()+")");
          i++;
         }
