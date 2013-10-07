@@ -37,19 +37,40 @@ public class TestCategorias {
     }
     
     @Test
-    public void AltaCategotia(){
+    public void AltaCategoria(){
         try {
             int id_cat = cc.altaCategoria(c);
             
-            ResultSet res = mbd.SELECT("select * from categorias "
+            ResultSet res = mbd.SELECT("select id_categoria from categorias "
                     + "where nombre = '"+c.getNombre()+"'");
             res.next();
             
             assertSame(res.getInt("id_categoria"), id_cat);
             
+            
             mbd.UPDATE("delete from categorias where id_categoria = "+id_cat);
         } catch (SQLException ex) {
             Logger.getLogger(TestCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void Unicidad() {
+        Categoria cat = new Categoria();
+        try {
+            ResultSet res = mbd.SELECT("select min(id_categoria), nombre from categorias");
+            res.next();
+            cat.setNombre(res.getString(2));
+            cc.altaCategoria(cat);
+            
+            mbd.UPDATE("delete from categorias where nombre = '"+cat.getNombre()+"'");
+            fail();
+            
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() != 1062){
+                fail();
+            }
+                
         }
     }
 }

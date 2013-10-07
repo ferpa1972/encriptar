@@ -29,9 +29,23 @@ public class Controladorjuegos {
     
     /*------------------------------------------------------*/
     public ArrayList <Juego> buscar(String busqueda) throws SQLException{
-        String sql = "";
+        String sql = "select distinct j.id_juego, j.nombre, j.foto "
+                   + "from juegos j, categorias_juegos cj, categorias c, usuarios u " 
+                   + "where j.id_juego = cj.id_juego and c.id_categoria = cj.id_categoria"
+                   + " and j.id_desarrollador = u.id_usuario and "
+                   + "(j.nombre like '%"+busqueda+"%' or c.nombre like '%"+busqueda+"%' "
+                   + "or u.nick like '%"+busqueda+"%' or j.descripcion like '%"+busqueda+"%')";
+        
         ResultSet res = mbd.SELECT(sql);
-        ArrayList juegos = null;
+        ArrayList juegos = new ArrayList();
+        while(res.next()){
+            Juego j = new Juego();
+            j.setId(res.getInt("id_juego"));
+            j.setNombre(res.getString("nombre"));
+            j.setPortada(res.getString("foto"));
+            juegos.add(j);
+        }
+        
         return juegos;
     }
     
