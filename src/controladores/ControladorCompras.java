@@ -4,9 +4,9 @@ package controladores;
 import baseDatos.ManejadorBD;
 import dominio.Cliente;
 import dominio.Compra;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -26,14 +26,12 @@ public class ControladorCompras {
     }
     
     public void altaCompra(Compra c) throws SQLException{
-        Date fec = new Date(c.getFecha().getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha = sdf.format(c.getFecha());
+        
         String sql = "insert into compras values ("+c.getJuego().getId()+
-                     ","+c.getCliente().getId()+","+fec.toString()+")";
-        try {
-            mbd.INSERT(sql);
-        } catch (SQLException ex) {
-            throw ex;
-        }
+                     ","+c.getCliente().getId()+", '"+fecha+"')";
+        mbd.INSERT(sql);
     }
 
     public ArrayList verComprasPorJuego(int id){
