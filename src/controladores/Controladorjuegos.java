@@ -11,12 +11,13 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controladorjuegos {
     
     private static Controladorjuegos INSTANCIA = null;
     private ManejadorBD mbd = ManejadorBD.getInstancia();
-    
     
     public static Controladorjuegos getInstancia(){
         if (INSTANCIA == null)
@@ -27,6 +28,17 @@ public class Controladorjuegos {
     private Controladorjuegos() {
         //mbd.conectar();
     }
+    
+    /*------------------------------------------------------*/
+    public ArrayList <Juego> buscar(String busqueda) throws SQLException{
+        String sql = "";
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = null;
+        return juegos;
+    }
+    
+    /*-------------------------------------------------------*/
+    
     
     public Juego buscarJuegoPorID(int id) throws SQLException{
         ResultSet res = mbd.SELECT("select id_juego, nombre from juegos where id_juego = "+id);
@@ -61,15 +73,14 @@ public class Controladorjuegos {
     
     public ArrayList listarJuegosPorCategoria(int id_cat) throws SQLException{
         ArrayList juegos = new ArrayList();
-        String sql = "select j.id_juego, j.nombre from juegos j, categorias_juegos cj "+
+        String sql = "select j.id_juego from juegos j, categorias_juegos cj "+
                 "where cj.id_categoria = "+id_cat+
                 " and cj.id_juego = j.id_juego";
 
         ResultSet res = mbd.SELECT(sql);
         while(res.next()){
-            Juego j = new Juego();
-            j.setNombre(res.getString("nombre"));
-            j.setId(res.getInt("id_juego"));
+            Juego j = this.verInfoJuego(res.getInt("id_juego"));
+            
             juegos.add(j);
         }
 
@@ -79,7 +90,7 @@ public class Controladorjuegos {
     public Juego verInfoJuego(int id) throws SQLException{
         Juego j = new Juego();
         String sql = "select j.*, u.nick from juegos j, usuarios u "+
-                     "where j.id_desarrollador = u.id_usuario and j.id_juego ="+id;
+                     "where j.id_desarrollador = u.id_usuario and j.id_juego ="+ id;
         ResultSet res = mbd.SELECT(sql);
         res.next();
 
@@ -89,6 +100,8 @@ public class Controladorjuegos {
         j.setPrecio(res.getDouble("precio"));
         j.setSize(res.getDouble("size"));
         j.setPortada(res.getString("foto"));
+        j.setComentarios(verComentariosJuego(j.getId()));
+        j.setCategorias(ControladorCategorias.getInstancia().verCategoriasPorJuego(j.getId()));
         Desarrollador des = new Desarrollador();
         des.setNick(res.getString("nick"));
         j.setDes(des);
@@ -98,7 +111,7 @@ public class Controladorjuegos {
         ArrayList <Version> vers = new ArrayList<>();
         while(res2.next()){
             Version v = new Version();
-            v.setId_juego(id);
+            v.setId_juego((id));
             v.setNro_version(res2.getString("numero_version"));
             v.setSize(res2.getDouble("size"));
             vers.add(v);
@@ -190,4 +203,52 @@ public class Controladorjuegos {
         
         return mbd.INSERT(sql);
     }
+    
+    public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
+        ArrayList juegos = new ArrayList();
+        String sql = "select j.id_juego, j.nombre, c.id_usuario from juegos j, compras c "+
+                "where c.id_usuario = "+id_usuario+
+                " and c.id_juego = j.id_juego";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = new Juego();
+            j.setNombre(res.getString("nombre"));
+            j.setId(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
+    public ArrayList listarJuegosPorDesarrollador(int id_usuario) throws SQLException{
+        ArrayList <Juego> juegos = new ArrayList<>();
+        String sql = "select id_juego, nombre from juegos "+
+                     "where id_desarrollador = "+id_usuario;
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = Controladorjuegos.getInstancia().verInfoJuego(res.getInt("id_juego"));
+            
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+
+    public ArrayList listarJuegosPorDesarrolladorVersionAprobada(int id_usuario) throws SQLException{
+        ArrayList <Juego> juegos = new ArrayList();
+        String sql = "select j.id_juego from juegos j, versiones v " +
+                        "where id_desarrollador = " + id_usuario + " AND  v.estado = 'aprobada' and j.id_juego = v.id_juego;";
+
+        ResultSet res = mbd.SELECT(sql);
+        while(res.next()){
+            Juego j = Controladorjuegos.getInstancia().verInfoJuego(res.getInt("id_juego"));
+            
+            juegos.add(j);
+        }
+
+        return juegos;
+    }
+    
 }

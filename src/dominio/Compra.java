@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Compra {
     private Juego juego;
-    private Cliente cliente;
+    private Usuario cliente;
     private Date fecha;
 
     public Juego getJuego() {
@@ -16,11 +16,11 @@ public class Compra {
         this.juego = juego;
     }
 
-    public Cliente getCliente() {
+    public Usuario getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(Usuario cliente) {
         this.cliente = cliente;
     }
 
@@ -32,7 +32,7 @@ public class Compra {
         this.fecha = fecha;
     }
 
-    public Compra(Juego juego, Cliente cliente, Date fecha) {
+    public Compra(Juego juego, Usuario cliente, Date fecha) {
         this.juego = juego;
         this.cliente = cliente;
         this.fecha = fecha;
