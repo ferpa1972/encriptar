@@ -6,7 +6,11 @@ import baseDatos.ManejadorBD;
 import dominio.Version;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +68,7 @@ public class ControladorVersiones {
         try {
             String sql = "INSERT INTO versiones (`id_juego`,`orden_de_alta`,`numero_version`,`size`,`jar`, " +
                         "`estado`, `fecha_alta`)" +
-                        "VALUES ($1,$2,$3,$4,$5,$6,$7);";
+                        "VALUES ($1,$2,$3,$4,'$5','$6','$7');";
             
             v.setOrden_alta(getOrdenDeAlta(v.getId_juego()));
             
@@ -74,7 +78,10 @@ public class ControladorVersiones {
             sql = sql.replace("$4", String.valueOf(v.getSize()));
             sql = sql.replace("$5", v.getJar());
             sql = sql.replace("$6", v.getEstado());
-            sql = sql.replace("$7", String.valueOf(v.getFecha_alta()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = sdf.format(v.getFecha_alta());
+             
+            sql = sql.replace("$7", fecha);
 
             mbd.INSERT(sql);
         } catch (SQLException ex) {
@@ -93,7 +100,7 @@ public class ControladorVersiones {
             res = mbd.SELECT(sql);
             
              while(res.next()){
-                ordenA = (res.getInt("orden"));
+                ordenA = (res.getInt("orden")+1);
             
         }
              
