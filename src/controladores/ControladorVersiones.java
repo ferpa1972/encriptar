@@ -2,10 +2,17 @@
 package controladores;
 
 import baseDatos.ManejadorBD;
+
 import dominio.Version;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ControladorVersiones {
     
@@ -57,5 +64,54 @@ public class ControladorVersiones {
         return versiones;
     }
     
+    public void altaversion(Version v){
+        try {
+            String sql = "INSERT INTO versiones (`id_juego`,`orden_de_alta`,`numero_version`,`size`,`jar`, " +
+                        "`estado`, `fecha_alta`)" +
+                        "VALUES ($1,$2,$3,$4,'$5','$6','$7');";
+            
+            v.setOrden_alta(getOrdenDeAlta(v.getId_juego()));
+            
+            sql = sql.replace("$1", String.valueOf(v.getId_juego()));
+            sql = sql.replace("$2", String.valueOf(v.getOrden_alta()));
+            sql = sql.replace("$3", (v.getNro_version()));
+            sql = sql.replace("$4", String.valueOf(v.getSize()));
+            sql = sql.replace("$5", v.getJar());
+            sql = sql.replace("$6", v.getEstado());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = sdf.format(v.getFecha_alta());
+             
+            sql = sql.replace("$7", fecha);
+
+            mbd.INSERT(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorVersiones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    private int getOrdenDeAlta(int idJuego ){
+        int ordenA = 1;
+        try {
+            String sql = "SELECT max(orden_de_alta) as orden FROM market.versiones where id_juego = " + idJuego + ";";
+            
+            ResultSet res;
+            
+            res = mbd.SELECT(sql);
+            
+             while(res.next()){
+                ordenA = (res.getInt("orden")+1);
+            
+        }
+             
+                     
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorVersiones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ordenA;
+
+    }
     
 }

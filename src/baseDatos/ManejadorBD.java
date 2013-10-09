@@ -103,8 +103,10 @@ public class ManejadorBD {
         st = conexion.createStatement();
         st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
         ResultSet res = st.getGeneratedKeys();
-        res.next();
-        return res.getInt(1);
+        if (res.next())
+            return res.getInt(1);
+        else
+            return 0;
     }
     
     public void UPDATE(String sql) throws SQLException{

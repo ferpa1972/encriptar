@@ -11,8 +11,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Controladorjuegos {
     
@@ -31,9 +29,23 @@ public class Controladorjuegos {
     
     /*------------------------------------------------------*/
     public ArrayList <Juego> buscar(String busqueda) throws SQLException{
-        String sql = "";
+        String sql = "select distinct j.id_juego, j.nombre, j.foto "
+                   + "from juegos j, categorias_juegos cj, categorias c, usuarios u " 
+                   + "where j.id_juego = cj.id_juego and c.id_categoria = cj.id_categoria"
+                   + " and j.id_desarrollador = u.id_usuario and "
+                   + "(j.nombre like '%"+busqueda+"%' or c.nombre like '%"+busqueda+"%' "
+                   + "or u.nick like '%"+busqueda+"%' or j.descripcion like '%"+busqueda+"%')";
+        
         ResultSet res = mbd.SELECT(sql);
-        ArrayList juegos = null;
+        ArrayList juegos = new ArrayList();
+        while(res.next()){
+            Juego j = new Juego();
+            j.setId(res.getInt("id_juego"));
+            j.setNombre(res.getString("nombre"));
+            j.setPortada(res.getString("foto"));
+            juegos.add(j);
+        }
+        
         return juegos;
     }
     
@@ -65,7 +77,7 @@ public class Controladorjuegos {
 
         while(i< cats.size()){
          Categoria c = (Categoria)cats.get(i);
-         mbd.INSERT("insert into categotias_juegos (id_juego, id_categoria) "
+         mbd.INSERT("insert into categorias_juegos (id_juego, id_categoria) "
                  + "values ("+idj+", "+c.getId()+")");
          i++;
         }
@@ -206,7 +218,7 @@ public class Controladorjuegos {
     
     public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
         ArrayList juegos = new ArrayList();
-        String sql = "select j.id_juego, j.nombre, c.id_usuario from juegos j, compras c "+
+        String sql = "select j.id_juego, j.nombre, j.foto, c.id_usuario from juegos j, compras c "+
                 "where c.id_usuario = "+id_usuario+
                 " and c.id_juego = j.id_juego";
 
@@ -215,6 +227,7 @@ public class Controladorjuegos {
             Juego j = new Juego();
             j.setNombre(res.getString("nombre"));
             j.setId(res.getInt("id_juego"));
+            j.setPortada(res.getString("foto"));
             juegos.add(j);
         }
 
