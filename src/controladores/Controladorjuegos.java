@@ -218,7 +218,7 @@ public class Controladorjuegos {
     
     public ArrayList listarJuegosPorCliente(int id_usuario) throws SQLException{
         ArrayList juegos = new ArrayList();
-        String sql = "select j.id_juego, j.nombre, c.id_usuario from juegos j, compras c "+
+        String sql = "select j.id_juego, j.nombre, j.foto, c.id_usuario from juegos j, compras c "+
                 "where c.id_usuario = "+id_usuario+
                 " and c.id_juego = j.id_juego";
 
@@ -227,6 +227,7 @@ public class Controladorjuegos {
             Juego j = new Juego();
             j.setNombre(res.getString("nombre"));
             j.setId(res.getInt("id_juego"));
+            j.setPortada(res.getString("foto"));
             juegos.add(j);
         }
 
