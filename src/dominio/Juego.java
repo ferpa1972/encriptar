@@ -28,9 +28,9 @@ public class Juego {
         this.compras = new ArrayList();
         this.comentarios = new ArrayList();
         this.versiones = new ArrayList();
-        Version v = new Version();
-        v.setJar("");
-        this.versiones.add(v);
+//        Version v = new Version();
+//        v.setJar("");
+//        this.versiones.add(v);
     }
 
     public Desarrollador getDes() {
