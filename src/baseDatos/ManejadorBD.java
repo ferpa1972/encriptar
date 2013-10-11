@@ -26,6 +26,14 @@ public class ManejadorBD {
         }
         return instancia;
     }
+
+    public Connection getConexion() {
+        return conexion;
+    }
+
+    public void setConexion(Connection conexion) {
+        this.conexion = conexion;
+    }
     
     private ManejadorBD(){
         this.bd = "";

@@ -27,7 +27,7 @@ public class Juego {
         this.categorias = new ArrayList();
         this.compras = new ArrayList();
         this.comentarios = new ArrayList();
-        this.versiones = new ArrayList();
+        //this.versiones = new ArrayList();
 //        Version v = new Version();
 //        v.setJar("");
 //        this.versiones.add(v);

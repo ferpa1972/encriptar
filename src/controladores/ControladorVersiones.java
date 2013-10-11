@@ -4,6 +4,9 @@ package controladores;
 import baseDatos.ManejadorBD;
 
 import dominio.Version;
+import java.io.FileInputStream;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -42,7 +45,7 @@ public class ControladorVersiones {
             v.setId_juego((id_juego));
             v.setNro_version(res.getString("numero_version"));
             v.setSize(res.getDouble("size"));
-            v.setJar(res.getString("jar"));
+            //v.setJar(res.getString("jar"));
             v.setEstado(res.getString("estado"));
             v.setFecha_alta(res.getDate("fecha_alta"));
             v.setOrden_alta(res.getInt("orden_de_alta"));
@@ -64,23 +67,31 @@ public class ControladorVersiones {
     public void altaversion(Version v){
         try {
             String sql = "INSERT INTO versiones (`id_juego`,`orden_de_alta`,`numero_version`,`size`,`jar`, " +
-                        "`estado`, `fecha_alta`)" +
-                        "VALUES ($1,$2,$3,$4,'$5','$6','$7');";
+                        "`estado`, `fecha_alta`,`extension`)" +
+                        "VALUES (?,?,?,?,?,?,?,?);";
             
             v.setOrden_alta(getOrdenDeAlta(v.getId_juego()));
+//            sql = sql.replace("$1", String.valueOf(v.getId_juego()));
+//            sql = sql.replace("$2", String.valueOf(v.getOrden_alta()));
+//            sql = sql.replace("$3", (v.getNro_version()));
+//            sql = sql.replace("$4", String.valueOf(v.getSize()));
             
-            sql = sql.replace("$1", String.valueOf(v.getId_juego()));
-            sql = sql.replace("$2", String.valueOf(v.getOrden_alta()));
-            sql = sql.replace("$3", (v.getNro_version()));
-            sql = sql.replace("$4", String.valueOf(v.getSize()));
-            sql = sql.replace("$5", v.getJar());
-            sql = sql.replace("$6", v.getEstado());
+//            sql = sql.replace("$6", v.getEstado());
+            PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String fecha = sdf.format(v.getFecha_alta());
              
-            sql = sql.replace("$7", fecha);
-
-            mbd.INSERT(sql);
+//            sql = sql.replace("$7", fecha);
+            ps.setInt(1, v.getId_juego());
+            ps.setInt(2, v.getOrden_alta());
+            ps.setString(3, v.getNro_version());
+            ps.setDouble(4, v.getSize());
+            ps.setBinaryStream(5, v.getJarFi());
+            ps.setString(6, v.getEstado());
+            ps.setDate(7, Date.valueOf(fecha));
+            ps.setString(8, v.getExtension());
+            ps.executeUpdate();
+//            mbd.INSERT(sql);
         } catch (SQLException ex) {
             Logger.getLogger(ControladorVersiones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -125,7 +136,9 @@ public class ControladorVersiones {
                 v.setId_juego((idJuego));
                 v.setNro_version(res.getString("numero_version"));
                 v.setSize(res.getDouble("size"));
-                v.setJar(res.getString("jar"));
+                //v.setJar((FileInputStream) res.getBinaryStream(5));
+                v.setJarIs(res.getBinaryStream("jar"));
+                v.setExtension("extension");
                 v.setEstado(res.getString("estado"));
                 v.setFecha_alta(res.getDate("fecha_alta"));
                 v.setOrden_alta(res.getInt("orden_de_alta"));
