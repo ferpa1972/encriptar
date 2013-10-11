@@ -16,6 +16,23 @@ public class Juego {
     private ArrayList comentarios;
    // private ArrayList <Version> versiones;
 
+    public Juego() {
+        this.id = 0;
+        this.nombre = "";
+        this.descripcion = "";
+        this.size = 0;
+        this.precio = 0;
+        this.des = new Desarrollador();
+        this.portada = "";
+        this.categorias = new ArrayList();
+        this.compras = new ArrayList();
+        this.comentarios = new ArrayList();
+        this.versiones = new ArrayList();
+//        Version v = new Version();
+//        v.setJar("");
+//        this.versiones.add(v);
+    }
+
     public Desarrollador getDes() {
         return des;
     }
@@ -24,6 +41,7 @@ public class Juego {
         this.des = des;
     }
 
+    
     public String getPortada() {
         return portada;
     }
@@ -39,6 +57,8 @@ public class Juego {
     public void setId(int id) {
         this.id = id;
     }
+    
+    
 
     public String getNombre() {
         return nombre;
