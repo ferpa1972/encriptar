@@ -251,7 +251,7 @@ public class Controladorjuegos {
 
     public ArrayList listarJuegosPorDesarrolladorVersionAprobada(int id_usuario) throws SQLException{
         ArrayList <Juego> juegos = new ArrayList();
-        String sql = "select j.id_juego from juegos j, versiones v " +
+        String sql = "select Distinct(j.id_juego) from juegos j, versiones v " +
                         "where id_desarrollador = " + id_usuario + " AND  v.estado = 'aprobada' and j.id_juego = v.id_juego;";
 
         ResultSet res = mbd.SELECT(sql);
