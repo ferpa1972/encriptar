@@ -138,7 +138,7 @@ public class ControladorVersiones {
                 v.setSize(res.getDouble("size"));
                 //v.setJar((FileInputStream) res.getBinaryStream(5));
                 v.setJarIs(res.getBinaryStream("jar"));
-                v.setExtension("extension");
+                v.setExtension(res.getString("extension"));
                 v.setEstado(res.getString("estado"));
                 v.setFecha_alta(res.getDate("fecha_alta"));
                 v.setOrden_alta(res.getInt("orden_de_alta"));
