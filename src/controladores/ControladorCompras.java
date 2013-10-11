@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -54,5 +56,17 @@ public class ControladorCompras {
             System.out.println(ex.toString());
             return null;
         }
+    }
+    
+    public Boolean comproJuego(int idUsuario, int idJuego){
+        
+        try {
+            String sql = "SELECT * FROM market.compras where id_juego =" + idJuego + " and id_usuario = " + idUsuario + ";";
+            ResultSet res = mbd.SELECT(sql);
+            if  (res.next()) return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorCompras.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

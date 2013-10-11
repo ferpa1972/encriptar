@@ -128,7 +128,7 @@ public class Controladorjuegos {
             v.setSize(res2.getDouble("size"));
             vers.add(v);
         }
-        j.setVersiones(vers);
+        //j.setVersiones(vers);
 
         return j;
     }

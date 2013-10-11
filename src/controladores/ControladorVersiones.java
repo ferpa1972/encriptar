@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -112,6 +109,35 @@ public class ControladorVersiones {
         }
         return ordenA;
 
+    }
+    
+    public Version ultimaVerAprobada(int idJuego){
+        Version v = new Version();
+        try {
+           
+            String sql = "SELECT * FROM market.versiones where id_juego = " + idJuego + " and estado = 'aprobada' and " + 
+                        "orden_de_alta = (select max(orden_de_alta) from versiones where id_juego = " + idJuego
+                        + " and estado = 'aprobada')";
+        
+            ResultSet res = mbd.SELECT(sql);
+            
+           res.next();
+                v.setId_juego((idJuego));
+                v.setNro_version(res.getString("numero_version"));
+                v.setSize(res.getDouble("size"));
+                v.setJar(res.getString("jar"));
+                v.setEstado(res.getString("estado"));
+                v.setFecha_alta(res.getDate("fecha_alta"));
+                v.setOrden_alta(res.getInt("orden_de_alta"));
+                v.setJuego(cj.buscarJuegoPorID(idJuego));
+                
+               
+            
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorVersiones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return v;
     }
     
 }
