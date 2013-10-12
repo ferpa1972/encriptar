@@ -16,6 +16,7 @@ public class Controladorjuegos {
     
     private static Controladorjuegos INSTANCIA = null;
     private ManejadorBD mbd = ManejadorBD.getInstancia();
+    private ControladorUsuarios cu = ControladorUsuarios.getInstancia();
     
     public static Controladorjuegos getInstancia(){
         if (INSTANCIA == null)
@@ -164,7 +165,7 @@ public class Controladorjuegos {
             com.setId_usu(res.getInt("id_usuario"));
             com.setId_padre(res.getInt("id_padre"));
             respuestas.add(com);
-            System.out.println(com.getTexto());
+            //System.out.println(com.getTexto());
         }
 
         return respuestas;
@@ -261,6 +262,59 @@ public class Controladorjuegos {
             juegos.add(j);
         }
 
+        return juegos;
+    }
+    /*--------------- OBTENER INFO BASICA DEL JUEGO PARA LISTAR ----------------*/
+    public Juego verInfoBasica(int id) throws SQLException{
+        String sql = "select j.*, u.nick from juegos j, usuarios u where id_juego = "+id
+                      +" and j.id_desarrollador = u.id_usuario";
+        
+        //System.out.println("consulta ver info basica: "+sql);
+        
+        ResultSet res = mbd.SELECT(sql);
+        Juego j = new Juego();
+        while (res.next()){
+            j.setId(id);
+            j.setNombre(res.getString("nombre"));
+            j.setPrecio(res.getDouble("precio"));
+            j.setPortada(res.getString("foto"));
+            j.setDescripcion(res.getString("descripcion"));
+            j.setSize(res.getDouble("size"));
+            j.setDes((Desarrollador)cu.find(res.getString("nick")));
+            //System.out.println(j.getNombre());
+        }
+        return j;
+    }
+    /*----------------- OBTENER LOS 'X' JUEGOS MAS COMPRADOS ---------------------*/
+    public ArrayList listarMasComprados(int cant) throws SQLException{
+        String sql = "select id_juego, count(*)as cant from compras"
+                    + " group by id_juego order by cant DESC limit "+cant;
+        
+        //System.out.println("consulta mas comprados: "+sql);
+        
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = new ArrayList();
+        while (res.next()){
+            Juego j = this.verInfoBasica(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+        
+        return juegos;
+    }
+    
+    public ArrayList listarMasComentados(int cant) throws SQLException{
+        String sql = "select id_juego, count(*)as cant from comentarios"
+                    + " group by id_juego order by cant DESC limit "+cant;
+        
+        //System.out.println("consulta mas comentados: "+sql);
+        
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList juegos = new ArrayList();
+        while (res.next()){
+            Juego j = this.verInfoBasica(res.getInt("id_juego"));
+            juegos.add(j);
+        }
+        
         return juegos;
     }
     
