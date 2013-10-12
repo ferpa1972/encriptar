@@ -37,6 +37,7 @@ public class ControladorVersiones {
         else if (filtro == 'r'){
             sql += " and estado = 'rechazada'";
         }
+           
         
         ResultSet res = mbd.SELECT(sql);
         ArrayList <Version> versiones = new ArrayList<>();
