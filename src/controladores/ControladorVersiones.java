@@ -65,7 +65,7 @@ public class ControladorVersiones {
         return versiones;
     }
     
-    public void altaversion(Version v){
+    public void altaversion(Version v) throws SQLException{
         try {
             String sql = "INSERT INTO versiones (`id_juego`,`orden_de_alta`,`numero_version`,`size`,`jar`, " +
                         "`estado`, `fecha_alta`,`extension`)" +
@@ -94,9 +94,23 @@ public class ControladorVersiones {
             ps.executeUpdate();
 //            mbd.INSERT(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorVersiones.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
 
+    }
+    
+    public void bajaVersion(int idJ, int ordenAlta) throws SQLException{
+        try {
+            String sql = "DELETE FROM versiones" +
+                           " WHERE id_juego = " + idJ 
+                    + " and orden_de_alta = " +
+                    ordenAlta +";";
+               
+               PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
+               ps.execute();
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
     
     private int getOrdenDeAlta(int idJuego ){

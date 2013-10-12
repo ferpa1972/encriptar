@@ -112,7 +112,7 @@ public class Controladorjuegos {
         j.setPrecio(res.getDouble("precio"));
         j.setSize(res.getDouble("size"));
         j.setPortada(res.getString("foto"));
-        j.setComentarios(verComentariosJuego(j.getId()));
+        j.setComentarios(ControladorComentarios.getInstancia().verComentariosJuego(j.getId()));
         j.setCategorias(ControladorCategorias.getInstancia().verCategoriasPorJuego(j.getId()));
         Desarrollador des = new Desarrollador();
         des.setNick(res.getString("nick"));
@@ -131,43 +131,6 @@ public class Controladorjuegos {
         //j.setVersiones(vers);
 
         return j;
-    }
-    
-    public ArrayList verComentariosJuego(int id) throws SQLException{
-        ArrayList coments = new ArrayList();
-        String sql = "select * from comentarios where id_juego = "+id;
-        ResultSet res = mbd.SELECT(sql);
-        while(res.next()){
-            Comentario com = new Comentario();
-            com.setId(res.getInt("id_comentario"));
-            com.setTexto(res.getString("texto"));
-            com.setId_juego(res.getInt("id_juego"));
-            com.setFecha(res.getDate("fecha"));
-            com.setId_usu(res.getInt("id_usuario"));
-            com.setId_padre(res.getInt("id_padre"));
-            coments.add(com);
-        }
-
-        return coments;
-    }
-    
-    public ArrayList selectRespuestas(int id) throws SQLException{
-        ArrayList respuestas = new ArrayList();
-        String sql = "select * from comentarios where id_padre = "+id;
-        ResultSet res = mbd.SELECT(sql);
-        while(res.next()){
-            Comentario com = new Comentario();
-            com.setId(res.getInt("id_comentario"));
-            com.setTexto(res.getString("texto"));
-            com.setId_juego(res.getInt("id_juego"));
-            com.setFecha(res.getDate("fecha"));
-            com.setId_usu(res.getInt("id_usuario"));
-            com.setId_padre(res.getInt("id_padre"));
-            respuestas.add(com);
-            System.out.println(com.getTexto());
-        }
-
-        return respuestas;
     }
     
     public ArrayList listarJuegos() throws SQLException{
