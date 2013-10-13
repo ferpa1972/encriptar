@@ -45,7 +45,7 @@ public class ControladorUsuarios {
         return usuarios;
     }
     
-    public void altaUsuario(Usuario user) throws Exception{
+    public int altaUsuario(Usuario user) throws SQLException{
         Date fnac = new Date(user.getFecha_nac().getTime());
         String sql = "insert into usuarios (nombre,apellido,nick,fecha_nacimiento,email,tipo,foto,sitio_web,pass)"
                 + "   values ('$1','$2','$3','$4','$5','$6','$7','$8','$9')";
@@ -65,7 +65,7 @@ public class ControladorUsuarios {
         else{
             sql = sql.replace("$8", "");
         }
-        mbd.INSERT(sql);
+        return mbd.INSERT(sql);
     }
     
     public void actualizarUsuario(Usuario user) throws Exception{
