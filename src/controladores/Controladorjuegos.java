@@ -62,7 +62,7 @@ public class Controladorjuegos {
         return j;
     }
     
-    public void altaJuego(Juego juego, ArrayList cats) throws SQLException {
+    public int altaJuego(Juego juego, ArrayList cats) throws SQLException {
         int i=0;
         String sql ="insert into juegos (nombre, descripcion, size, precio, id_desarrollador, foto) "
                     + "values ('$1','$2',$3,$4,$5,'$6')";
@@ -74,13 +74,16 @@ public class Controladorjuegos {
         sql = sql.replace("$6", juego.getPortada());
 
         int idj = mbd.INSERT(sql);
+        
 
         while(i< cats.size()){
          Categoria c = (Categoria)cats.get(i);
          mbd.INSERT("insert into categorias_juegos (id_juego, id_categoria) "
                  + "values ("+idj+", "+c.getId()+")");
          i++;
+         
         }
+        return idj;
     }
     
     public ArrayList listarJuegosPorCategoria(int id_cat) throws SQLException{
