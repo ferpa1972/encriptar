@@ -40,10 +40,11 @@ public class Controladorjuegos {
         ResultSet res = mbd.SELECT(sql);
         ArrayList juegos = new ArrayList();
         while(res.next()){
-            Juego j = new Juego();
-            j.setId(res.getInt("id_juego"));
-            j.setNombre(res.getString("nombre"));
-            j.setPortada(res.getString("foto"));
+//            Juego j = new Juego();
+//            j.setId(res.getInt("id_juego"));
+//            j.setNombre(res.getString("nombre"));
+//            j.setPortada(res.getString("foto"));
+            Juego j = this.verInfoBasica(res.getInt("id_juego"));
             juegos.add(j);
         }
         
