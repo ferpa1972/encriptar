@@ -99,7 +99,42 @@ public class ControladorVersiones {
 
     }
     
+    public ArrayList verInfoVer() throws SQLException{
+        String sql = "select u.nick, j.nombre, v.numero_version, v.orden_de_alta, v.id_juego, v.size, v.fecha_alta from versiones v, juegos j, usuarios u where j.id_juego=v.id_juego and "
+            + "j.id_desarrollador=u.id_usuario and v.estado='pendiente' order by id_juego";
+        ResultSet res = mbd.SELECT(sql);
+        ArrayList versiones = new ArrayList();
+         while(res.next())
+         {
+         //Version v= datosVersion(res.getInt("j.id_juego"), res.getInt("orden_de_alta"));
+             Version v = new Version();
+             v.setJuego(cj.verInfoJuego(res.getInt("id_juego")));
+             v.setSize(res.getDouble("size"));
+             v.setFecha_alta(res.getDate("fecha_alta"));
+             v.setNro_version(res.getString("numero_version"));
+             v.setOrden_alta(res.getInt("orden_de_alta"));
+             versiones.add(v);
+         }
+         return versiones;
+        }
     
+    public void CambiarEstado(String estado, int idj, int orden, String motivo) throws SQLException{
+        try {
+            String sql;
+            sql="UPDATE versiones SET estado='"+estado+"' where id_juego="+idj+" and orden_de_alta="+orden+" ";
+            System.out.println(sql);
+            mbd.UPDATE(sql);
+            if(estado.equals("rechazada")){
+                sql="insert into versiones_rechazadas " + 
+                "values(" + idj + ", " + orden + ", '" + motivo + "')";
+                mbd.INSERT(sql);
+            }
+             
+            
+        } catch (SQLException ex) {
+            throw ex;
+        }
+    }
     
     public void bajaVersion(int idJ, int ordenAlta) throws SQLException{
         try {
