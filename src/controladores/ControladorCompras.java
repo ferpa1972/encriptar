@@ -4,6 +4,7 @@ package controladores;
 import baseDatos.ManejadorBD;
 import dominio.Cliente;
 import dominio.Compra;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,12 @@ public class ControladorCompras {
         String sql = "insert into compras values ("+c.getJuego().getId()+
                      ","+c.getCliente().getId()+", '"+fecha+"')";
         mbd.INSERT(sql);
+    }
+    
+        public void bajaCompra(Compra c) throws SQLException{
+        String sql = "delete from compras where id_juego = " + c.getJuego().getId() + " and id_usuario =" + c.getCliente().getId();
+        PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
+        ps.execute();
     }
 
     public ArrayList verComprasPorJuego(int id){
