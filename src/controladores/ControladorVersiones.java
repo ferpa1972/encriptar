@@ -99,6 +99,8 @@ public class ControladorVersiones {
 
     }
     
+    
+    
     public void bajaVersion(int idJ, int ordenAlta) throws SQLException{
         try {
             String sql = "DELETE FROM versiones" +
