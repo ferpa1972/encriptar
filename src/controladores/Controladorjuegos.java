@@ -8,6 +8,7 @@ import dominio.Desarrollador;
 import dominio.Juego;
 import dominio.Version;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -283,6 +284,18 @@ public class Controladorjuegos {
         }
         
         return juegos;
+    }
+    
+    public void bajaJuego(int idJ) throws SQLException{
+         try {
+            String sql = "DELETE FROM juegos" +
+                           " WHERE id_juego = " + idJ + ";";
+               
+               PreparedStatement ps = mbd.getConexion().prepareStatement(sql);
+               ps.execute();
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
     
 }

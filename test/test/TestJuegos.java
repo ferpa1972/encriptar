@@ -65,7 +65,6 @@ public class TestJuegos {
             j.setSize(25);
             
             
-            
         } catch (SQLException ex) {
             Logger.getLogger(TestVersiones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,10 +73,11 @@ public class TestJuegos {
 
 
     @Test
-    public void AltaVersion() {
+    public void AltaJuego() {
         try {
-            cv.altaversion(v);
-            cv.bajaVersion(v.getId_juego(), v.getOrden_alta());
+           
+            cj.altaJuego(j, j.getCategorias());
+            cj.bajaJuego(j.getId());
         } catch (SQLException ex) {
             fail();
         }
