@@ -79,6 +79,7 @@ public class Version {
         this.id_juego = id_juego;
     }
 
+
     public String getNro_version() {
         return nro_version;
     }
