@@ -48,7 +48,7 @@ public class TestCompras {
     @Test
     public void altaCompra() throws SQLException{
     try {
-            ccomp.altaCompra(c);
+          ccomp.altaCompra(c);
      
  
         

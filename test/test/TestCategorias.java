@@ -46,12 +46,13 @@ public class TestCategorias {
             res.next();
             
             assertSame(res.getInt("id_categoria"), id_cat);
+           
             
-            
-            mbd.UPDATE("delete from categorias where id_categoria = "+id_cat);
+          mbd.UPDATE("delete from categorias where id_categoria = "+id_cat);
         } catch (SQLException ex) {
             Logger.getLogger(TestCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
     
     @Test
