@@ -31,7 +31,7 @@ public class ControladorCategorias {
     public ArrayList listarCategorias(){
         try {
             ArrayList categorias = new ArrayList();
-            String consulta = "select id_categoria, nombre from categorias order by nombre";
+            String consulta = "select id_categoria, nombre from categorias ";
             ResultSet res = mbd.SELECT(consulta);
             while(res.next()){
                 Categoria cat = new Categoria();

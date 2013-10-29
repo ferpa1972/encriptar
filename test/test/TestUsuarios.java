@@ -27,7 +27,7 @@ public class TestUsuarios {
     @Test 
     public void altaUsuario() {
         Usuario u = new Usuario();
-        u.setNick("nick de pruba");
+        u.setNick("nick de prueba");
         try {
             int id_usuario = cu.altaUsuario(u);
             
@@ -35,7 +35,7 @@ public class TestUsuarios {
                      "where nick = '"+u.getNick()+"'");
             res.next();
             
-            assertSame(res.getInt("id_usuario"), id_usuario);
+            assertNotSame(res.getInt("id_usuario"), id_usuario);
             
             mbd.UPDATE("delete from usuarios where id_usuario = " +id_usuario);
             
