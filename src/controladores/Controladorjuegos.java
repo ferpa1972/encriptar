@@ -93,7 +93,7 @@ public class Controladorjuegos {
         ArrayList juegos = new ArrayList();
         String sql = "select j.id_juego from juegos j, categorias_juegos cj "+
                 "where cj.id_categoria = "+id_cat+
-                " and cj.id_juego = j.id_juego";
+                " and cj.id_juego = j.id_juego limit 0,2";
 
         ResultSet res = mbd.SELECT(sql);
         while(res.next()){

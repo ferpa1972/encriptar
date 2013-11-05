@@ -4,6 +4,8 @@ package dominio;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 
 public class Usuario {
     private int id;
@@ -16,6 +18,7 @@ public class Usuario {
     private String email;
     private String img;
     private String pass;
+    
 
     public Usuario() {
         this.id = 0;
